@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: #000;
+    }
+    canvas {
+      background-color: pink;
+      display: block;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="480" height="720"></canvas>
+  <script>
+    // 1. 绘制front到canvas中
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+    // 2. 创建图片
+    const up = new Image()
+    up.src = 'up.jpg'
+    up.onload = function () {
+      ctx.drawImage(up, 0, 0, canvas.width, canvas.height)
+    }
+    const down = new Image()
+    down.src = 'down.jpg'
+    // 3. 给canvas注册移动的事件
+    let done = false
+    canvas.addEventListener('mousedown', function () {
+      done = true
+    })
+    canvas.addEventListener('mousemove', function (e) {
+      if (done) {
+        const x = e.offsetX - 10
+        const y = e.offsetY - 10
+        // 从不穿衣服的图片中绘制一部分内容到canvas上
+        // 从不穿衣服的图片中截取 10 * 10的图片 绘制到canvas上
+        ctx.drawImage(down, x, y, 20, 20, x, y, 20, 20)
+      }
+    })
+    canvas.addEventListener('mouseup', function () {
+      done = false
+    })
+  </script>
+</body>
+</html>

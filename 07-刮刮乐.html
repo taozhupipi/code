@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .prize {
+      width: 300px;
+      height: 100px;
+      background-color: pink;
+      font-size: 36px;
+      line-height: 100px;
+      text-align: center;
+      position: absolute;
+    }
+    canvas {
+      position: absolute;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="300" height="100"></canvas>
+  <div class="prize">奖品</div>
+
+  <script>
+    // 随机一个奖品
+    const prizeArr = ['蓝牙耳机', '加班券', '厕所通行证']
+    // | 0 是取整的  等价于  parseInt 
+    // 了解  位运算  | &
+    const random = Math.random() * prizeArr.length | 0
+    document.querySelector('.prize').innerText = prizeArr[random]
+
+    // 使用canvas实现功能
+    // 1. 使用canvas绘制一个灰色的矩形
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+    ctx.fillStyle = '#ccc'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    // 2. 刮奖逻辑
+    // 鼠标按下且移动的时候，需要擦除canvas画布
+    let done = false
+    canvas.addEventListener('mousedown', function () {
+      done = true
+    })
+    canvas.addEventListener('mousemove', function (e) {
+      if (done) {
+        // offsetX 和 offsetY 可以获取到鼠标在元素中的偏移位置
+        console.log(e.offsetX, e.offsetY)
+        // console.log('移动了，需要擦除')
+        const x = e.offsetX - 5
+        const y = e.offsetY - 5
+        ctx.clearRect(x, y, 10, 10)
+      }
+    })
+    canvas.addEventListener('mouseup', function () {
+      done = false
+    })
+  </script>
+</body>
+</html>
